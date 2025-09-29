@@ -11,7 +11,81 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Elementos de menú móvil no encontrados');
     }
 
-    // Slider functionality (manejado en index.html)
+    // Slider functionality
+    const slider = document.querySelector('.slider');
+    const slidesContainer = document.querySelector('.slides');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    let currentSlide = 0;
+    let slides = [];
+
+    // URL de Google Sheets publicada como TSV (ajusta con tu URL)
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/TU_SHEET_ID/pub?output=tsv'; // Reemplaza con tu URL
+
+    async function loadSlidesFromSheets() {
+        try {
+            // Fetch datos de Google Sheets
+            const response = await fetch(sheetUrl);
+            const data = await response.text();
+            const rows = data.split('\n').map(row => row.split('\t')); // Para TSV
+            const images = rows.slice(1).map(row => row[0]).filter(url => url); // URLs de imágenes
+
+            // Limpia contenedor
+            slidesContainer.innerHTML = '';
+
+            // Crea slides dinámicamente
+            images.forEach((imgUrl, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.style.opacity = index === 0 ? '1' : '0'; // Primer slide visible
+                slide.innerHTML = `<img src="${imgUrl}" alt="Slide ${index + 1}">`;
+                slidesContainer.appendChild(slide);
+            });
+
+            slides = document.querySelectorAll('.slide');
+
+            // Inicia slider
+            if (slides.length > 0) {
+                showSlide(currentSlide);
+            } else {
+                console.error('No se encontraron imágenes en Google Sheets');
+            }
+        } catch (error) {
+            console.error('Error cargando imágenes de Google Sheets:', error);
+        }
+    }
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.style.transition = 'opacity 0.5s ease-in-out'; // Efecto fade
+            slide.style.opacity = i === index ? '1' : '0';
+        });
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        showSlide(nextIndex);
+    }
+
+    function prevSlide() {
+        const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(prevIndex);
+    }
+
+    // Controles del slider
+    if (nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+    } else {
+        console.error('Botones de slider no encontrados');
+    }
+
+    // Carga imágenes al iniciar
+    loadSlidesFromSheets();
+
+    // Auto-avance opcional (cada 5 segundos)
+    setInterval(nextSlide, 5000);
 
     // Radio Player Functionality
     let isRadioPlaying = false;
