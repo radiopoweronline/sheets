@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap&text=RadioPower');
+
+/* CSS crítico para renderizado inmediato */
+:root {
+    --neon-cyan: #00ffff;
+    --neon-pink: #ff00ff;
+    --bg-primary: #16213e;
+    --bg-secondary: #1a1a2e;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', monospace;
+    background: var(--bg-primary);
+    padding-bottom: 100px;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Optimizaciones de rendimiento */
+.neon-text {
+    text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+    will-change: transform;
+}
+
+/* Placeholders para evitar layout shift */
+.slider-placeholder, .djs-placeholder, .gallery-placeholder {
+    background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-primary) 50%, var(--bg-secondary) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    content-visibility: auto;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Transiciones optimizadas */
+.gallery-item {
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+.track-card {
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(0,255,255,0.1) 0%, rgba(255,0,255,0.1) 100%);
+    border: 1px solid rgba(0,255,255,0.3);
+    transform: translateZ(0);
+}
+
+.track-card:hover {
+    transform: translateY(-5px) translateZ(0);
+}
+
+/* Floating Player optimizado */
+.floating-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, rgba(15,15,35,0.95) 0%, rgba(26,26,46,0.95) 100%);
+    backdrop-filter: blur(20px);
+    border-top: 2px solid var(--neon-cyan);
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Iconos optimizados */
+.icon-container {
+    background-color: transparent;
+    padding: 15px;
+    border-radius: 12px;
+    max-width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+.icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.icon {
+    flex: 1 1 22%;
+    max-width: 70px;
+    padding: 5px;
+}
+
+.icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    display: block;
+    transform: translateZ(0);
+}
+
+.icon img:hover {
+    transform: scale(1.1) translateZ(0);
+}
+
+/* Modal optimizado */
+#modal {
+    transform: translateZ(0);
+}
+
+#modal .bg-gray-800 {
+    padding: 16px;
+    transform: translateZ(0);
+}
+
+#modal h3 {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+#modal p {
+    margin-bottom: 8px;
+}
+
+#modal button {
+    margin-top: 0;
+    background-color: #3b82f6;
+    transform: translateZ(0);
+}
+
+#modal button:hover {
+    background-color: #2563eb;
+}
+
+/* Animaciones optimizadas */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+    transform: translateZ(0);
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg) translateZ(0); }
+    to { transform: rotate(360deg) translateZ(0); }
+}
+
+.album-art {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-pink) 100%);
+    animation: rotate 10s linear infinite;
+    transform: translateZ(0);
+}
+
+/* Estados de reproducción optimizados */
+.playing .album-art {
+    animation-play-state: running;
+}
+
+.paused .album-art {
+    animation-play-state: paused;
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .gallery-item,
+    .track-card,
+    .icon img,
+    .album-art,
+    .pulse-animation {
+        transition: none;
+        animation: none;
+    }
+    
+    .gallery-item:hover,
+    .track-card:hover,
+    .icon img:hover {
+        transform: none;
+    }
+}
+
+/* Media queries optimizadas */
+@media (max-width: 768px) {
+    .icon {
+        flex: 1 1 25%;
+        max-width: 60px;
+        padding: 4px;
+    }
+    
+    .icon-container {
+        padding: 10px;
+    }
+    
+    .floating-player {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .icon {
+        flex: 1 1 30%;
+        max-width: 55px;
+    }
+    
+    body {
+        padding-bottom: 80px;
+    }
+}
+
+/* Scroll suave nativo */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Optimizaciones para imágenes */
+img {
+    content-visibility: auto;
+    transform: translateZ(0);
+}
+
+/* Clases de utilidad para performance */
+.performance-optimized {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loaded {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Efectos neon mejorados */
+.neon-glow {
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.glow {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+}
+
+/* Progress bar */
+.progress-bar {
+    background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-pink) 100%);
+    height: 4px;
+    transition: width 0.1s ease;
+}
+
+/* Control buttons */
+.control-btn {
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+    color: var(--neon-cyan);
+}
+
+/* Estados del slider */
+.slide-active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-hidden {
+    opacity: 0;
+    transform: translateX(100%);
+}
